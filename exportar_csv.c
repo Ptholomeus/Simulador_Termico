@@ -18,6 +18,7 @@ void exportar_matriz(Matriz M, const char *nombre){
 		fputc('\n', f);
 	}
 	fclose(f);
+	return;
 }
 
 // muy bruto
@@ -36,4 +37,5 @@ void exportar_solucion(Matriz M, const char *nombre){
 		fputc('\n', f);
 	}
 	fclose(f);
+	return;
 }

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "funciones_matrices.h"
 #include "testear.h"
+#include "funciones_fisica_calor.h"
 
 void test_matrices(){
 		
@@ -95,9 +96,12 @@ void test_matrices_2(){
 	M.col = col;	
 
 	M = crear_matriz(M.fil, M.col);
+	M_copia = crear_matriz(M.fil, M.col);
 	iniciar_matriz_rand_int(&M);
 	
-	M_copia = copiar_matriz(M);
+	
+	
+	copiar_matriz(&M_copia, &M);
 		
 	// hacer operaciones por fila
 	int opt;
@@ -132,6 +136,7 @@ void test_matrices_2(){
 		printf("6 Test de inversa\n");
 		printf("7 Permutar Col_a <-> Col_b \n");
 		printf("8 Test de PLU\n");
+		printf("9 ---\n");
 		printf("0 Salir \n\n");
 		
 		printf("Elegir: \n");
@@ -285,6 +290,9 @@ void test_matrices_2(){
 				destruir_matriz(&test_1);
 				destruir_matriz(&test_2);
 				
+				break;
+			case 9:
+								
 				break;
 			
 			case 0:

@@ -77,6 +77,36 @@ Matriz crear_matriz(int fil, int col){
 	}
 }
 
+Matriz crear_matriz_desde_fila(int fil, int col, Matriz *fila){
+	
+	Matriz A;
+	
+	if (fil <= 0 || col <= 0) {
+		
+		A.matriz = NULL;
+		A.datos  = NULL;
+		
+		A.fil = 0;
+		A.col = 0;
+		
+		return A;
+		
+	} else {
+		
+		A.fil = fil;
+		A.col = col;
+		
+		// Por qué no usar calloc?
+		A.datos  = fila->datos;
+		A.matriz = malloc( fil * sizeof(double *) );
+	
+		for (int idx = 0; idx < fil; idx++)
+			A.matriz[idx] = &A.datos[idx * col];
+		
+		return A;
+	}
+}
+
 void destruir_matriz(Matriz *A){
 	
 	free((*A).matriz);
@@ -465,17 +495,27 @@ void op_normalizar_fila(Matriz *M, int a, int b){
 	coef = 1.0 / coef;
 	
 	op_fila_multiplicar(M, a, coef);
+	
+	return;
 }
 
-Matriz copiar_matriz(Matriz M){
+
+/*
+	Toma como argumento UNA matriz, luego copia los datos y los asigna a la matriz que llama a la función.
+	No requiere manejo de memoria ni destruye información dentro de la llamada, sólo en la asignación.
+	Usar sólo con matrices temporales o auxiliares (I guess).
+	DESTRUYE totalmente el acceso al contenido previo, incluyendo punteros, de la matriz que llama.
+*/
+
+/*
+	Copio B en A
+*/
+void copiar_matriz(Matriz *A, Matriz *B){
 		
 		// chequear que las dimensiones den
 		
-		Matriz copia = crear_matriz(M.fil, M.col);
-		
-		memcpy(copia.datos, M.datos, M.fil * M.col * sizeof(double));
-		
-	return copia;
+		memcpy(A->datos, B->datos, B->fil * B->col * sizeof(double));
+	 return;	
 }
 
 /*
@@ -668,7 +708,7 @@ void obtener_P_L_U (Matriz *M, Matriz *P, Matriz *L, Matriz *U){
 	
 	iniciar_matriz_identidad(P);
 	iniciar_matriz_identidad(L);
-	*U = copiar_matriz(*M);
+	copiar_matriz(U, M);
 	
 	// vars aux
 	bool coef_es_cero = false;
@@ -756,8 +796,9 @@ void registrar_op_elemental(Vector_N *cambios, double valor){
 double determinante_2(Matriz *M){
 	
 	Vector_N operaciones = {NULL, 0};
-	Matriz M_copia = crear_matriz(M->fil, M->col);
-	M_copia = copiar_matriz(*M);
+	Matriz M_copia; // 
+	M_copia = crear_matriz(M->fil, M->col);
+	copiar_matriz(&M_copia, M);
 	
 	triangular_matriz (&M_copia, &operaciones);
 	
@@ -856,4 +897,65 @@ void crear_solucion_sistema(Matriz *x, Matriz *A, Matriz *b){
 	
 	return;
 	
+}
+
+// verificar que coincidan las matrices
+
+/*
+	Copia los elementos de una fila a la fila de una matriz
+	Argumentos:
+	*M : Matriz objetivo
+	*M_fil : Matriz donante
+	fila_agregada : a qué fila se copia la fila donada
+	
+*/
+void acumular_soluciones(Matriz *M, Matriz *M_fil, int fila_agregada){
+		
+	for(int i = 0; i < M->col; i++){
+		M->matriz[fila_agregada][i] = M_fil->matriz[0][i];
+	}
+	
+	return;
+}
+
+Matriz crear_matriz_filas_alineadas(Matriz *M){
+	
+	Matriz filas_en_fila;
+	filas_en_fila = crear_matriz(1, M->fil * M-> col);
+	if (M->datos != NULL && filas_en_fila.datos != NULL) {
+        memcpy(filas_en_fila.datos, M->datos, M->fil * M-> col * sizeof(double));
+    }
+	
+	return filas_en_fila;
+}
+
+// index from 0
+void llenar_fil (Matriz *M, int fil, double T){
+	
+	for (int i = 0; i < M->col; i++){
+		M->matriz[fil][i] = T;
+	}
+	
+}
+
+// index from 0
+void llenar_col (Matriz *M, int col, double T){
+	
+	for (int i = 0; i < M->fil; i++){
+		M->matriz[i][col] = T;
+	}
+	
+}
+
+// Estudiar!!!!!!!!!!
+void swap_matrices(Matriz *A, Matriz *B) {
+    // Intercambio de los punteros de filas
+    double **temp_matriz = A->matriz;
+    A->matriz = B->matriz;
+    B->matriz = temp_matriz;
+    
+    // Intercambio del bloque de memoria contiguo
+    double *temp_datos = A->datos;
+    A->datos = B->datos;
+    B->datos = temp_datos;
 }

@@ -54,6 +54,14 @@ int main(){
 		printf(" 2: Prueba de matrices 1\n");
 		printf(" 3: Prueba de matrices 2\n");
 		printf(" 4: Resolver problema calor 1 \n");
+		printf(" 5: Resolver problema calor 1.1 \n");
+		printf(" 6: Resolver problema calor transitorio \n");
+		printf(" 7: Resolver problema calor transitorio sin almacenar\n");
+		printf(" 8: Resolver problema calor transitorio graficado\n");
+		printf(" 9: Resolver problema calor estacionario 2D\n");
+		printf("10: Resolver problema calor transitorio 2D\n");
+		printf("11: Resolver transitorio 1D con PID\n");
+		printf("12: Resolver transitorio 2D con PID\n");
 		printf("-1: Salir \n\n");
 	
 		printf("Elegir: ");
@@ -79,12 +87,47 @@ int main(){
 			case 4:
 				resolver();
 				break;
+				
+			case 5:
+				resolver_2();
+				break;
+
+			case 6:
+				resolver_3();
+				break;
+				
+			case 7:
+				resolver_4();
+				break;
 		
+			case 8:
+				resolver_4_grafico();
+				break;
+
+			case 9:
+				resolver_5();
+				break;
+				
+			case 10:
+				resolver_6_grafico();
+				break;		
+			
+			case 11:
+				resolver_7_PID();
+				break;
+				
+			case 12:
+				resolver_8_grafico_PID_2D();
+				break;	
+				
 			default:
 				break;
 		}
-	
+		getchar();
+		getchar();
 	}
+	
+	system("pause");
 	return 0;
 	
 }

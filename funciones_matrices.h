@@ -8,6 +8,7 @@ typedef struct {
 } Matriz;
 
 Matriz crear_matriz(int fil, int col);
+Matriz crear_matriz_desde_fila(int fil, int col, Matriz *fila);
 void destruir_matriz(Matriz *A);
 Matriz crear_submatriz (Matriz A, int fil_quitar, int col);
 void imprimir_matriz (Matriz A);
@@ -32,7 +33,7 @@ void op_permutar_fil_L(Matriz *M, int a, int b);
 void op_permutar_col(Matriz *M, int a, int b);
 void op_fila_multiplicar(Matriz *M, int a, double k);
 void op_normalizar_fila(Matriz *M, int a, int b);
-Matriz copiar_matriz(Matriz M);
+void copiar_matriz(Matriz *A, Matriz *B);
 void triangular_matriz (Matriz *M, Vector_N *cambios);
 void triangular_matriz_Gauss (Matriz *M);
 void obtener_P_L_U (Matriz *M, Matriz *P, Matriz *L, Matriz *U);
@@ -43,3 +44,8 @@ Matriz crear_bwd_subs(Matriz *U, Matriz *y);
 void suma_matrices (Matriz *A, Matriz *B, Matriz *C);
 void resta_matrices (Matriz *A, Matriz *B, Matriz *C);
 void crear_solucion_sistema(Matriz *x, Matriz *A, Matriz *b);
+void acumular_soluciones(Matriz *M, Matriz *M_fil, int fila_agregada);
+Matriz crear_matriz_filas_alineadas(Matriz *M);
+void llenar_fil (Matriz *M, int fil, double T);
+void llenar_col (Matriz *M, int col, double T);
+void swap_matrices(Matriz *A, Matriz *B);

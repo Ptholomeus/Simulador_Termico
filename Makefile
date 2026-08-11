@@ -4,7 +4,8 @@ funciones_fisica_calor.c \
 solucionar.c \
 testear.c \
 exportar_csv.c \
-funciones_vectores.c
+funciones_vectores.c \
+gnuplot_i.c
 OBJ    := $(SRC:.c=.o)
 DEP    := $(SRC:.c=.d)
 EXE    := programa.exe
